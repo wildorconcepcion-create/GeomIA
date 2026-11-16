@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2>Gestión de Eventos Anómalos</h2>
+        <p class="text-muted mb-0">
+            Registro y monitoreo de eventos detectados mediante observación satelital.
+        </p>
+    </div>
+
+    <div>
+
+        {% if current_user.rol == "administrador" %}
+
+        <a href="/evento/nuevo"
+           class="btn btn-success">
+            Nuevo Evento
+        </a>
+
+        {% endif %}
+
+        <a href="/dashboard"
+           class="btn btn-secondary">
+            Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+<div class="card shadow">
+
+    <div class="card-body">
+
+        <table class="table table-hover table-striped align-middle">
+
+            <thead class="table-dark">
+
+                <tr>
+                    <th>ID</th>
+                    <th>Evento</th>
+                    <th>Tipo</th>
+                    <th>Ubicación</th>
+                    <th>Riesgo</th>
+                    <th>Acciones</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for evento in eventos %}
+
+                <tr>
+
+                    <td>{{ evento.id }}</td>
+
+                    <td>
+                        {{ evento.nombre_evento }}
+                    </td>
+
+                    <td>
+                        {{ evento.tipo_evento }}
+                    </td>
+
+                    <td>
+                        {{ evento.ubicacion }}
+                    </td>
+
+                    <td>
+
+                        {% if evento.nivel_riesgo == "ALTO" %}
+                            <span class="badge bg-danger">
+                                {{ evento.nivel_riesgo }}
+                            </span>
+
+                        {% elif evento.nivel_riesgo == "MEDIO" %}
+                            <span class="badge bg-warning text-dark">
+                                {{ evento.nivel_riesgo }}
+                            </span>
+
+                        {% else %}
+                            <span class="badge bg-success">
+                                {{ evento.nivel_riesgo }}
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        {% if current_user.rol == "administrador" %}
+
+                        <a href="/evento/editar/{{ evento.id }}"
+                           class="btn btn-warning btn-sm">
+                            Editar
+                        </a>
+
+                        <a href="/evento/eliminar/{{ evento.id }}"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('¿Desea eliminar este evento?')">
+                            Eliminar
+                        </a>
+
+                        {% else %}
+
+                        <span class="text-muted">
+                            Solo lectura
+                        </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                {% if eventos|length == 0 %}
+
+                <tr>
+
+                    <td colspan="6" class="text-center">
+
+                        No existen eventos registrados.
+
+                    </td>
+
+                </tr>
+
+                {% endif %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

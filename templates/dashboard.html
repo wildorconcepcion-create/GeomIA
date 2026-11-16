@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Dashboard</h2>
+
+<p>
+    Bienvenido <strong>{{ current_user.nombre }}</strong>
+</p>
+
+<p>
+    Rol:
+    <strong>{{ current_user.rol }}</strong>
+</p>
+
+<div class="row mb-4">
+
+    <div class="col-md-6">
+        <div class="card shadow p-3">
+            <h4>Total Usuarios</h4>
+            <h2>{{ total_usuarios }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow p-3">
+            <h4>Total Eventos</h4>
+            <h2>{{ total_eventos }}</h2>
+        </div>
+    </div>
+
+</div>
+<a href="/importar-nasa"
+   class="btn btn-info">
+   Importar Eventos NASA
+</a>
+
+<a href="/eventos" class="btn btn-primary">
+    Ver Eventos
+</a>
+
+{% if current_user.rol == "administrador" %}
+
+<a href="/usuarios" class="btn btn-dark">
+    Gestionar Usuarios
+</a>
+
+{% endif %}
+
+<a href="/logout" class="btn btn-danger">
+    Cerrar Sesión
+</a>
+
+{% endblock %}
